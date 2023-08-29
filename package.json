@@ -7,15 +7,36 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "preinstall": "npx only-allow pnpm",
+    "lerna": "lerna",
+    "turbo": "turbo",
+    "build": "pnpm turbo run build",
+    "dev": "pnpm turbo run dev --no-cache --parallel --continue",
+    "test": "jest --color --runInBand --ci",
+    "version": "lerna run version",
+    "prepublish:main": "pnpm install && pnpm build",
+    "prepublish:dev": "pnpm install && pnpm build",
+    "publish:main": "pnpm lerna publish",
+    "publish:dev": "pnpm lerna publish prerelease --preid dev --dist-tag dev",
+    "clean": "pnpm turbo clean && turbo run clean",
+    "format": "prettier --write \"{packages,apps}/**/*.{ts,js,tsx,jsx,json}\"",
+    "lint": "eslint packages/ --ext .js,.ts,.jsx,.tsx",
+    "commit": "cz",
+    "welcome": "bash .welcome/script.bash"
   },
   "devDependencies": {
-    "eslint-config-custom": "workspace:*",
-    "prettier": "latest",
-    "turbo": "latest"
+    "@vtex/prettier-config": "^1.0.0",
+    "@vtex/tsconfig": "^0.6.0",
+    "commitizen": "^4.3.0",
+    "commitlint": "^17.7.1",
+    "eslint": "^8.47.0",
+    "eslint-config-vtex": "^15.0.2",
+    "eslint-config-vtex-react": "^9.0.3",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.0",
+    "prettier": "^3.0.2",
+    "turbo": "^1.10.12",
+    "typescript": "^5.1.6"
   },
   "engines": {
     "node": ">=14.0.0"
